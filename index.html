@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IndrexAI - AI Tools for Everyone</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap'); 
+
+  * { margin:0; padding:0; box-sizing:border-box; } 
+
+  :root {
+    --black: #080810;
+    --deep: #0f0f1a;
+    --card: #13131f;
+    --border: #1e1e30;
+    --purple: #7c3aed;
+    --violet: #a855f7;
+    --cyan: #06b6d4;
+    --white: #f0f0ff;
+    --muted: #6b7280;
+    --text: #c8c8d8;
+  } 
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--black);
+    color: var(--text);
+    line-height: 1.6;
+  } 
+
+  /* NAV */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(8,8,16,0.95);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+  } 
+
+  .logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+  } 
+
+  .logo span { color: var(--violet); } 
+
+  .nav-links { display: flex; gap: 12px; align-items: center; } 
+
+  .nav-btn {
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+  } 
+
+  .nav-btn.ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  } 
+
+  .nav-btn.solid {
+    background: var(--purple);
+    color: white;
+  } 
+
+  /* HERO */
+  .hero {
+    text-align: center;
+    padding: 80px 20px 60px;
+    position: relative;
+    overflow: hidden;
+  } 
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  } 
+
+  .badge {
+    display: inline-block;
+    background: rgba(124,58,237,0.15);
+    border: 1px solid rgba(124,58,237,0.3);
+    color: var(--violet);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 24px;
+  } 
+
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(36px, 8vw, 64px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 20px;
+  } 
+
+  .hero h1 .gradient {
+    background: linear-gradient(135deg, var(--purple), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  } 
+
+  .hero p {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 480px;
+    margin: 0 auto 36px;
+  } 
+
+  .hero-btns {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  } 
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--purple), var(--violet));
+    color: white;
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+  } 
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    padding: 14px 28px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    cursor: pointer;
+  } 
+
+  /* TOOLS */
+  .tools {
+    padding: 60px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+  } 
+
+  .section-label {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--violet);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+  } 
+
+  .section-title {
+    text-align: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(24px, 5vw, 36px);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  } 
+
+  .section-sub {
+    text-align: center;
+    color: var(--muted);
+    margin-bottom: 40px;
+    font-size: 15px;
+  } 
+
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  } 
+
+  .tool-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 20px;
+    transition: border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+  } 
+
+  .tool-card:hover { border-color: var(--purple); } 
+
+  .tool-card.locked::after {
+    content: '🔒 Pro';
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(124,58,237,0.2);
+    color: var(--violet);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+  } 
+
+  .tool-card.free::after {
+    content: '✓ Free';
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(6,182,212,0.15);
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+  } 
+
+  .tool-icon { font-size: 36px; margin-bottom: 14px; }
+  .tool-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .tool-card p { font-size: 13px; color: var(--muted); } 
+
+  .tool-btn {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 8px 16px;
+    background: rgba(124,58,237,0.15);
+    color: var(--violet);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid rgba(124,58,237,0.2);
+    width: 100%;
+    text-align: center;
+  } 
+
+  /* AI DEMO */
+  .demo {
+    background: var(--deep);
+    padding: 60px 20px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  } 
+
+  .demo-box {
+    max-width: 680px;
+    margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  } 
+
+  .demo-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  } 
+
+  .demo-tab {
+    padding: 12px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  } 
+
+  .demo-tab.active {
+    color: var(--violet);
+    border-bottom-color: var(--violet);
+  } 
+
+  .demo-content { padding: 24px; } 
+
+  .demo-input {
+    width: 100%;
+    background: var(--deep);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    color: var(--white);
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    resize: none;
+    height: 90px;
+    margin-bottom: 12px;
+  } 
+
+  .demo-input:focus { outline: none; border-color: var(--purple); } 
+
+  .demo-run {
+    background: linear-gradient(135deg, var(--purple), var(--violet));
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+  } 
+
+  .demo-output {
+    margin-top: 16px;
+    background: var(--deep);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 14px;
+    color: var(--text);
+    min-height: 60px;
+    display: none;
+  } 
+
+  .demo-output.visible { display: block; } 
+
+  .typing::after {
+    content: '▋';
+    animation: blink 1s infinite;
+  } 
+
+  @keyframes blink { 50% { opacity: 0; } } 
+
+  /* PRICING */
+  .pricing {
+    padding: 60px 20px;
+    max-width: 780px;
+    margin: 0 auto;
+  } 
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-top: 40px;
+  } 
+
+  .price-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 24px;
+  } 
+
+  .price-card.popular {
+    border-color: var(--purple);
+    position: relative;
+  } 
+
+  .popular-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--purple), var(--violet));
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  } 
+
+  .plan-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 6px;
+  } 
+
+  .plan-price {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--white);
+    margin: 16px 0 4px;
+  } 
+
+  .plan-price span { font-size: 16px; color: var(--muted); font-weight: 400; }
+  .plan-desc { font-size: 13px; color: var(--muted); margin-bottom: 20px; } 
+
+  .plan-features { list-style: none; margin-bottom: 24px; }
+  .plan-features li {
+    font-size: 14px;
+    color: var(--text);
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  } 
+
+  .plan-features li:last-child { border-bottom: none; }
+  .check { color: var(--cyan); font-size: 16px; }
+  .cross { color: var(--muted); font-size: 16px; } 
+
+  .plan-btn {
+    width: 100%;
+    padding: 13px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+  } 
+
+  .plan-btn.free-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--white);
+  } 
+
+  .plan-btn.pro-btn {
+    background: linear-gradient(135deg, var(--purple), var(--violet));
+    color: white;
+  } 
+
+  .discount-tag {
+    display: inline-block;
+    background: rgba(6,182,212,0.15);
+    color: var(--cyan);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-left: 8px;
+  } 
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 30px 20px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+  } 
+
+  footer strong { color: var(--violet); } 
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 200;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  } 
+
+  .modal-overlay.visible { display: flex; } 
+
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 24px;
+    max-width: 400px;
+    width: 100%;
+  } 
+
+  .modal h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 20px;
+    color: var(--white);
+    margin-bottom: 8px;
+  } 
+
+  .modal p { font-size: 14px; color: var(--muted); margin-bottom: 20px; } 
+
+  .modal-close {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    background: var(--purple);
+    color: white;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 10px;
+  } 
+
+  .modal-cancel {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    font-size: 14px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body> 
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Indrex<span>AI</span></div>
+  <div class="nav-links">
+    <a href="#pricing" class="nav-btn ghost">Pricing</a>
+    <a href="#tools" class="nav-btn solid">Get Started</a>
+  </div>
+</nav> 
+
+<!-- HERO -->
+<div class="hero">
+  <div class="badge">✦ AI Tools for Everyone</div>
+  <h1>Work smarter with<br><span class="gradient">AI that delivers</span></h1>
+  <p>Chat, write, and create with powerful AI tools — free to start, pro to unlock everything.</p>
+  <div class="hero-btns">
+    <a href="#tools" class="btn-primary">Try for Free →</a>
+    <a href="#pricing" class="btn-secondary">See Pricing</a>
+  </div>
+</div> 
+
+<!-- TOOLS -->
+<div class="tools" id="tools">
+  <div class="section-label">What You Get</div>
+  <div class="section-title">4 Powerful AI Tools</div>
+  <div class="section-sub">Free users get limited access. Upgrade to Pro for unlimited use.</div> 
+
+  <div class="tools-grid">
+    <div class="tool-card free">
+      <div class="tool-icon">🤖</div>
+      <h3>AI Chatbot</h3>
+      <p>Ask anything and get instant intelligent answers.</p>
+      <div class="tool-btn" onclick="openTool('chat')">Try Now →</div>
+    </div>
+    <div class="tool-card free">
+      <div class="tool-icon">✍️</div>
+      <h3>AI Writer</h3>
+      <p>Generate articles, captions, emails and more.</p>
+      <div class="tool-btn" onclick="openTool('write')">Try Now →</div>
+    </div>
+    <div class="tool-card locked">
+      <div class="tool-icon">🎨</div>
+      <h3>Image AI</h3>
+      <p>Describe any image and AI generates it instantly.</p>
+      <div class="tool-btn" onclick="showUpgrade()">Upgrade →</div>
+    </div>
+    <div class="tool-card locked">
+      <div class="tool-icon">📊</div>
+      <h3>Business AI</h3>
+      <p>Business plans, strategies, and market analysis.</p>
+      <div class="tool-btn" onclick="showUpgrade()">Upgrade →</div>
+    </div>
+  </div>
+</div> 
+
+<!-- DEMO -->
+<div class="demo">
+  <div class="section-label">Live Demo</div>
+  <div class="section-title">Try IndrexAI Now</div>
+  <div class="section-sub" style="margin-bottom:30px">Free — no signup needed</div> 
+
+  <div class="demo-box">
+    <div class="demo-tabs">
+      <button class="demo-tab active" onclick="switchTab(this, 'chat')">🤖 Chat</button>
+      <button class="demo-tab" onclick="switchTab(this, 'write')">✍️ Write</button>
+    </div> 
+
+    <div class="demo-content" id="tab-chat">
+      <textarea class="demo-input" id="chat-input" placeholder="Ask me anything... e.g. What is artificial intelligence?"></textarea>
+      <button class="demo-run" onclick="runAI('chat')">Ask IndrexAI →</button>
+      <div class="demo-output" id="chat-output"></div>
+    </div> 
+
+    <div class="demo-content" id="tab-write" style="display:none">
+      <textarea class="demo-input" id="write-input" placeholder="What do you want to write? e.g. Write a caption for my restaurant Instagram page"></textarea>
+      <button class="demo-run" onclick="runAI('write')">Generate →</button>
+      <div class="demo-output" id="write-output"></div>
+    </div>
+  </div>
+</div> 
+
+<!-- PRICING -->
+<div class="pricing" id="pricing">
+  <div class="section-label">Pricing</div>
+  <div class="section-title">Simple, Honest Pricing</div>
+  <div class="section-sub">Start free. Upgrade when you're ready.</div> 
+
+  <div class="pricing-grid">
+    <!-- FREE -->
+    <div class="price-card">
+      <div class="plan-name">Free</div>
+      <div class="plan-price">$0 <span>/forever</span></div>
+      <div class="plan-desc">Perfect for trying IndrexAI</div>
+      <ul class="plan-features">
+        <li><span class="check">✓</span> AI Chatbot (10/day)</li>
+        <li><span class="check">✓</span> AI Writer (5/day)</li>
+        <li><span class="cross">✕</span> Image AI</li>
+        <li><span class="cross">✕</span> Business AI</li>
+        <li><span class="cross">✕</span> Priority speed</li>
+      </ul>
+      <button class="plan-btn free-btn" onclick="alert('You are on Free plan!')">Current Plan</button>
+    </div> 
+
+    <!-- PRO MONTHLY -->
+    <div class="price-card popular">
+      <div class="popular-badge">⚡ Most Popular</div>
+      <div class="plan-name">Pro Monthly</div>
+      <div class="plan-price">$10 <span>/month</span></div>
+      <div class="plan-desc">Full access to all tools</div>
+      <ul class="plan-features">
+        <li><span class="check">✓</span> AI Chatbot (unlimited)</li>
+        <li><span class="check">✓</span> AI Writer (unlimited)</li>
+        <li><span class="check">✓</span> Image AI</li>
+        <li><span class="check">✓</span> Business AI</li>
+        <li><span class="check">✓</span> Priority speed</li>
+      </ul>
+      <button class="plan-btn pro-btn" onclick="showUpgrade()">Get Pro →</button>
+    </div> 
+
+    <!-- PRO YEARLY -->
+    <div class="price-card">
+      <div class="plan-name">Pro Yearly <span class="discount-tag">16.67% off</span></div>
+      <div class="plan-price">$100 <span>/year</span></div>
+      <div class="plan-desc">Save $20 compared to monthly</div>
+      <ul class="plan-features">
+        <li><span class="check">✓</span> AI Chatbot (unlimited)</li>
+        <li><span class="check">✓</span> AI Writer (unlimited)</li>
+        <li><span class="check">✓</span> Image AI</li>
+        <li><span class="check">✓</span> Business AI</li>
+        <li><span class="check">✓</span> Priority speed</li>
+      </ul>
+      <button class="plan-btn pro-btn" onclick="showUpgrade()">Get Yearly →</button>
+    </div>
+  </div>
+</div> 
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <strong>IndrexAI</strong> — AI Tools for Everyone</p>
+  <p style="margin-top:6px">Built with ❤️ by Great Osagiator</p>
+</footer> 
+
+<!-- UPGRADE MODAL -->
+<div class="modal-overlay" id="upgrade-modal">
+  <div class="modal">
+    <h3>⚡ Upgrade to Pro</h3>
+    <p>This tool is available on the Pro plan. Get unlimited access to all 4 AI tools for just $10/month or $100/year.</p>
+    <button class="modal-close" onclick="alert('Payment coming soon! Contact us to upgrade.')">Upgrade Now — $10/mo</button>
+    <button class="modal-cancel" onclick="closeUpgrade()">Maybe later</button>
+  </div>
+</div> 
+
+<script>
+  function switchTab(btn, tab) {
+    document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-chat').style.display = tab === 'chat' ? 'block' : 'none';
+    document.getElementById('tab-write').style.display = tab === 'write' ? 'block' : 'none';
+  } 
+
+  function openTool(tool) {
+    document.querySelector('.demo').scrollIntoView({ behavior: 'smooth' });
+    if (tool === 'write') {
+      document.querySelectorAll('.demo-tab')[1].click();
+    }
+  } 
+
+  async function runAI(type) {
+    const input = document.getElementById(type === 'chat' ? 'chat-input' : 'write-input');
+    const output = document.getElementById(type === 'chat' ? 'chat-output' : 'write-output');
+    const prompt = input.value.trim(); 
+
+    if (!prompt) { alert('Please type something first!'); return; } 
+
+    output.classList.add('visible');
+    output.classList.add('typing');
+    output.textContent = 'IndrexAI is thinking...'; 
+
+    const systemPrompt = type === 'chat'
+      ? 'You are IndrexAI, a helpful AI assistant. Answer clearly and concisely in 2-4 sentences.'
+      : 'You are IndrexAI, a creative writing assistant. Generate the requested content in a professional and engaging way. Keep it concise.'; 
+
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: systemPrompt,
+          messages: [{ role: 'user', content: prompt }]
+        })
+      }); 
+
+      const data = await response.json();
+      const text = data.content?.map(i => i.text || '').join('') || 'Sorry, something went wrong.';
+      output.classList.remove('typing');
+      output.textContent = text;
+    } catch (err) {
+      output.classList.remove('typing');
+      output.textContent = 'Error connecting to AI. Please try again.';
+    }
+  } 
+
+  function showUpgrade() {
+    document.getElementById('upgrade-modal').classList.add('visible');
+  } 
+
+  function closeUpgrade() {
+    document.getElementById('upgrade-modal').classList.remove('visible');
+  }
+</script> 
+
+</body>
+</html>
